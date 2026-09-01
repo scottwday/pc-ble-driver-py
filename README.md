@@ -84,7 +84,7 @@ Two development kits must be attached to the computer and the UART ports for the
 
 The config tox.ini contains the Python interpreter versions currently supported. Python wheels will be created for every supported version it finds on the system. To run tox, type:
 
-    tox -e <python environment> # For example py37, if you have that installed
+    tox -e <python environment> # For example py312, if you have that installed
 
 See [tox.ini](tox.ini) for more configuration of the build and running of tests.
 
@@ -127,7 +127,7 @@ SWIG in `c:\swig\swigwin-x.y.z`:
 
     PATH=%PATH%;c:\swig\swigwin-x.y.z;
 
-* Install Python 3.6 or newer by downloading the installer from [Python Windows Downloads](https://www.python.org/downloads/windows/)
+* Install Python 3.12, 3.13, or 3.14 by downloading the installer from [Python Windows Downloads](https://www.python.org/downloads/windows/)
 
 **Note**: Select the Python architecture (32 or 64-bit) that you plan to build for.
 
@@ -149,4 +149,3 @@ Install cmake and swig with [Homebrew](https://brew.sh/) with the `brew` command
 
     $ brew install cmake
     $ brew install swig
-

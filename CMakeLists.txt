@@ -37,6 +37,9 @@ endif()
 
 set(PC_BLE_DRIVER_PY_OUTDIR ${CMAKE_BINARY_DIR}/outdir)
 set(NRF_BLE_DRIVER_VERSION "4.1.4")
+if(DEFINED ENV{NRF_BLE_DRIVER_VERSION})
+    set(NRF_BLE_DRIVER_VERSION "$ENV{NRF_BLE_DRIVER_VERSION}")
+endif()
 
 # There is no reason to compile more than two SoftDevice API versions
 # The Python module only supports one SoftDevice API
