@@ -116,6 +116,17 @@ def patch_apple_cmake(source_dir):
     log("Patched cmake/apple.cmake to honor CMAKE_OSX_ARCHITECTURES")
 
 
+def patch_uart_transport(source_dir):
+    transport = os.path.join(source_dir, "src", "common", "transport", "uart_transport.cpp")
+    with open(transport, "r") as handle:
+        original = handle.read()
+    if "#include <chrono>" in original:
+        return
+    with open(transport, "w") as handle:
+        handle.write("#include <chrono>\n" + original)
+    log("Patched uart_transport.cpp to include <chrono>")
+
+
 def macos_arch():
     configured = os.environ.get("CMAKE_OSX_ARCHITECTURES")
     if configured:
@@ -160,6 +171,7 @@ def main():
 
     source_dir = extracted_root(nrf_extract)
     patch_apple_cmake(source_dir)
+    patch_uart_transport(source_dir)
     build_dir = os.path.join(work, "build")
     if os.path.isdir(build_dir):
         shutil.rmtree(build_dir)
