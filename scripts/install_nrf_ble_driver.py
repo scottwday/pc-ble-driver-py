@@ -120,11 +120,16 @@ def patch_uart_transport(source_dir):
     transport = os.path.join(source_dir, "src", "common", "transport", "uart_transport.cpp")
     with open(transport, "r") as handle:
         original = handle.read()
-    if "#include <chrono>" in original:
+    includes = []
+    if "#include <chrono>" not in original:
+        includes.append("#include <chrono>")
+    if "#include <thread>" not in original:
+        includes.append("#include <thread>")
+    if not includes:
         return
     with open(transport, "w") as handle:
-        handle.write("#include <chrono>\n" + original)
-    log("Patched uart_transport.cpp to include <chrono>")
+        handle.write("\n".join(includes) + "\n" + original)
+    log("Patched uart_transport.cpp to include required standard headers")
 
 
 def macos_arch():
