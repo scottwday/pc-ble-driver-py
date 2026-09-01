@@ -4,6 +4,10 @@ if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "")
 endif()
+
+if(DEFINED ENV{NRF_BLE_DRIVER_PREFIX})
+    list(APPEND CMAKE_PREFIX_PATH "$ENV{NRF_BLE_DRIVER_PREFIX}")
+endif()
 # Name of the project
 project (pc-ble-driver-py)
 # PYTHON_LIBRARY is changed by the PythonExtensions package, so a different variable is required to keep the original user flag

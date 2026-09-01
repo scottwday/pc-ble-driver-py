@@ -34,6 +34,21 @@ please install the redistributable installer for [Visual Studio 2013](https://ww
 ### macOS limitations
 The binary distribution of pc-ble-driver-py will only work with the official Python versions, not the one provided with macOS or a brew install.
 
+## Building wheels (GitHub Actions / cibuildwheel)
+
+Wheels for CPython 3.12 and 3.14 are built with [cibuildwheel](https://cibuildwheel.pypa.io/) on:
+
+* Windows 64-bit (`win_amd64`)
+* Linux x86_64 (`manylinux`)
+* macOS Intel (`macosx_x86_64`)
+* macOS Apple Silicon (`macosx_arm64`)
+
+The workflow is [`.github/workflows/build_wheels.yml`](.github/workflows/build_wheels.yml). Options live in [`pyproject.toml`](pyproject.toml) under `[tool.cibuildwheel]`.
+
+`before-all` builds and installs [nrf-ble-driver 4.1.4](https://github.com/NordicSemiconductor/pc-ble-driver/tree/v4.1.4) from source (the vcpkg port is 4.1.1 and does not satisfy `find_package(... 4.1.4 EXACT)`). See [`scripts/install_nrf_ble_driver.py`](scripts/install_nrf_ble_driver.py).
+
+Hardware tests that need two Nordic DKs are **not** run in CI. The wheel job only smoke-imports the compiled extensions.
+
 ## Building from source
 
 Before building pc-ble-driver-py you will need to install nrf-ble-driver as a CMake module. The easiest way to do this is to install it with [vcpkg](https://github.com/NordicPlayground/vcpkg).
