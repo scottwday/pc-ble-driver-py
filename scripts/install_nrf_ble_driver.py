@@ -195,10 +195,10 @@ def main():
     ]
     if sys.platform == "darwin":
         cmake_args.append("-DCMAKE_OSX_ARCHITECTURES=" + macos_arch())
-    if which("ninja"):
+    if sys.platform == "win32":
+        cmake_args.extend(["-G", "Visual Studio 17 2022", "-A", "x64"])
+    elif which("ninja"):
         cmake_args[1:1] = ["-G", "Ninja"]
-    elif sys.platform == "win32":
-        cmake_args.extend(["-A", "x64"])
 
     run(cmake_args, cwd=build_dir)
     run(["cmake", "--build", ".", "--config", "Release", "--target", "install"], cwd=build_dir)
