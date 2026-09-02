@@ -47,13 +47,13 @@ from abc import abstractmethod
 from threading import Thread, Lock
 
 from enum import Enum
-from typing import List
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
 
 import wrapt
 
+from pc_ble_driver_py.exceptions import NordicSemiException
 from pc_ble_driver_py.observers import *
 
 logger = logging.getLogger(__name__)
@@ -86,7 +86,6 @@ else:
     )
 
 import pc_ble_driver_py.ble_driver_types as util
-from pc_ble_driver_py.exceptions import NordicSemiException
 
 
 NRF_ERRORS = {
@@ -374,32 +373,32 @@ class BLEGapConnSecMode(object):
     def __init__(self, sm=0, lv=0):
         self.sm = sm
         self.lv = lv
-        
+
     def set_no_access(self):
         """BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS"""
         self.sm = 0
         self.lv = 0
-        
+
     def set_open(self):
         """BLE_GAP_CONN_SEC_MODE_SET_OPEN"""
         self.sm = 1
         self.lv = 1
-        
+
     def set_enc_no_mitm(self):
         """BLE_GAP_CONN_SEC_MODE_SET_ENC_NO_MITM"""
         self.sm = 1
         self.lv = 2
-        
+
     def set_enc_with_mitm(self):
         """BLE_GAP_CONN_SEC_MODE_SET_ENC_WITH_MITM"""
         self.sm = 1
         self.lv = 3
-        
-    def set_lesc_enc_with_mitm(self): 
+
+    def set_lesc_enc_with_mitm(self):
         """BLE_GAP_CONN_SEC_MODE_SET_LESC_ENC_WITH_MITM"""
         self.sm = 1
         self.lv = 4
-    
+
     def set_signed_no_mitm(self):
         """BLE_GAP_CONN_SEC_MODE_SET_SIGNED_NO_MITM"""
         self.sm = 2
@@ -416,18 +415,18 @@ class BLEGapConnSecMode(object):
             sm=sec_mode.sm,
             lv=sec_mode.lv,
         )
-        
+
     def to_c(self):
         sec_mode = driver.ble_gap_conn_sec_mode_t()
         sec_mode.sm = self.sm
         sec_mode.lv = self.lv
-        
+
         return sec_mode
 
     def __str__(self):
         return "sm({0.sm}) lv({0.lv}))".format(
             self
-        )    
+        )
 
 class BLEGapConnSec(object):
     def __init__(self, sec_mode, encr_key_size):
@@ -653,8 +652,8 @@ class BLEGapEncKey(object):
 
     def to_c(self):
         enc_key = driver.ble_gap_enc_key_t()
-        enk_key.master_id = BLEGapMasterId(self.master_id).to_c()
-        enk_key.enc_info = BLEGapEncInfo(self.enc_info).to_c()
+        enc_key.master_id = BLEGapMasterId(self.master_id).to_c()
+        enc_key.enc_info = BLEGapEncInfo(self.enc_info).to_c()
         return enc_key
 
     def __str__(self):
@@ -1040,7 +1039,7 @@ class BLEAdvData(object):
             try:
                 ad_len = ad_list[index]
                 if ad_len == 0:
-                    logger.info(f"ad_len is zero, discarding rest of ad_list")
+                    logger.info("ad_len is zero, discarding rest of ad_list")
                     return ble_adv_data
 
                 ad_type = ad_list[index + 1]
@@ -1347,7 +1346,7 @@ class BLEGattCharProps(object):
 
 class BLEGattsAttrMD(object):
     def __init__(self, vloc=driver.BLE_GATTS_VLOC_STACK,
-                 rd_auth=False, wr_auth=False, 
+                 rd_auth=False, wr_auth=False,
                  read_perm=None, write_perm=None, vlen=1):
         self.vloc = vloc
         self.rd_auth = rd_auth

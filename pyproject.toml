@@ -8,12 +8,73 @@ requires = [
     "swig",
 ]
 
-[flake8]
-exclude = [
-    "hex",
-    "__pycache__",
-    "lib"
+[project]
+name = "pc_ble_driver_py"
+version = "0.17.0"
+description = "Python bindings for the Nordic pc-ble-driver SoftDevice serialization library"
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+    "wrapt",
+    "cryptography",
 ]
+
+[dependency-groups]
+dev = [
+    { include-group = "lint" },
+    { include-group = "test" },
+    "scikit-build>=0.17.5",
+    "cmake>=3.13.3",
+    "ninja~=1.9.0",
+    "tox~=3.9.0",
+]
+lint = [
+    "ruff>=0.9",
+]
+test = [
+    "unittest-xml-reporting==3.0.4",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+# Native extension; do not install the project itself during `uv sync`.
+package = false
+index = [
+  { url = "https://pypi.org/simple", default = true }
+]
+
+
+[tool.ruff]
+target-version = "py310"
+src = ["pc_ble_driver_py", "tests", "scripts"]
+extend-exclude = [
+    "pc_ble_driver_py/hex",
+    "pc_ble_driver_py/lib",
+    ".nrf-ble-driver",
+    "_skbuild",
+    "dist",
+    "wheelhouse",
+]
+
+[tool.ruff.lint]
+# Flake8-compatible starter set (pycodestyle + pyflakes).
+select = ["E", "F", "W"]
+ignore = [
+    "E501",  # existing generated/wrapper code exceeds 88 columns
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Convenience star-imports re-export driver types and observers.
+"pc_ble_driver_py/ble_adapter.py" = ["F403", "F405"]
+"pc_ble_driver_py/examples/*.py" = ["F403", "F405"]
+# Native bindings are imported after runtime config is applied.
+"pc_ble_driver_py/ble_driver.py" = ["E402", "E721", "F403", "F405"]
+"tests/**/*.py" = ["E402", "E701", "E712", "E721", "F403", "F405"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
 
 [tool.cibuildwheel]
 # CPython 3.10, 3.12, and 3.14. Skip PyPy, musllinux, 32-bit, ARM Windows, and free-threaded.

@@ -45,7 +45,6 @@ import logging
 from pc_ble_driver_py.observers import BLEDriverObserver, BLEAdapterObserver
 
 from pc_ble_driver_py.ble_driver import BLEAdvData, BLEGapConnParams
-from pc_ble_driver_py.exceptions import NordicSemiException
 
 
 logger = logging.getLogger(__name__)
