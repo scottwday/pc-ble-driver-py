@@ -129,6 +129,9 @@ foreach(SD_API_VER ${SD_API_VERS})
     message(VERBOSE STATUS "LINK_LIBRARIES are ${LINK_LIBRARIES}")
 
     target_link_libraries(${PYTHON_MODULE_${SD_API_VER}} PRIVATE ${LINK_LIBRARIES})
+    if(APPLE)
+        target_link_options(${PYTHON_MODULE_${SD_API_VER}} PRIVATE "-undefined" "dynamic_lookup")
+    endif()
     target_compile_definitions(${PYTHON_MODULE_${SD_API_VER}} PRIVATE NRF_SD_BLE_API_VERSION=${SD_API_VER})
 
     get_target_property(CONNECTIVITY_SD_API_V${SD_API_VER}_PATH nrf::nrf_ble_driver_sd_api_v${SD_API_VER}_${NRF_BLE_DRIVER_LINKAGE_TYPE} INTERFACE_INCLUDE_DIRECTORIES)
