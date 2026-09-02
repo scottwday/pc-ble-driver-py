@@ -16,8 +16,8 @@ exclude = [
 ]
 
 [tool.cibuildwheel]
-# CPython 3.12 and 3.14 only. Skip PyPy, musllinux, 32-bit, ARM Windows, and free-threaded.
-build = ["cp312-*", "cp314-*"]
+# CPython 3.10, 3.12, and 3.14. Skip PyPy, musllinux, 32-bit, ARM Windows, and free-threaded.
+build = ["cp310-*", "cp312-*", "cp314-*"]
 skip = [
     "pp*",
     "*musllinux*",

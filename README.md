@@ -36,7 +36,7 @@ The binary distribution of pc-ble-driver-py will only work with the official Pyt
 
 ## Building wheels (GitHub Actions / cibuildwheel)
 
-Wheels for CPython 3.12 and 3.14 are built with [cibuildwheel](https://cibuildwheel.pypa.io/) on:
+Wheels for CPython 3.10, 3.12, and 3.14 are built with [cibuildwheel](https://cibuildwheel.pypa.io/) on:
 
 * Windows 64-bit (`win_amd64`)
 * Linux x86_64 (`manylinux`)
@@ -127,7 +127,7 @@ SWIG in `c:\swig\swigwin-x.y.z`:
 
     PATH=%PATH%;c:\swig\swigwin-x.y.z;
 
-* Install Python 3.12, 3.13, or 3.14 by downloading the installer from [Python Windows Downloads](https://www.python.org/downloads/windows/)
+* Install Python 3.10, 3.12, 3.13, or 3.14 by downloading the installer from [Python Windows Downloads](https://www.python.org/downloads/windows/)
 
 **Note**: Select the Python architecture (32 or 64-bit) that you plan to build for.
 
