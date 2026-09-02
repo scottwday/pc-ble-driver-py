@@ -116,20 +116,22 @@ def patch_apple_cmake(source_dir):
     log("Patched cmake/apple.cmake to honor CMAKE_OSX_ARCHITECTURES")
 
 
-def patch_uart_transport(source_dir):
-    transport = os.path.join(source_dir, "src", "common", "transport", "uart_transport.cpp")
-    with open(transport, "r") as handle:
-        original = handle.read()
-    includes = []
-    if "#include <chrono>" not in original:
-        includes.append("#include <chrono>")
-    if "#include <thread>" not in original:
-        includes.append("#include <thread>")
-    if not includes:
-        return
-    with open(transport, "w") as handle:
-        handle.write("\n".join(includes) + "\n" + original)
-    log("Patched uart_transport.cpp to include required standard headers")
+def patch_transport_headers(source_dir):
+    transport_dir = os.path.join(source_dir, "src", "common", "transport")
+    for name, headers in (
+        ("uart_transport.cpp", ("chrono", "thread")),
+        ("serialization_transport.cpp", ("chrono",)),
+    ):
+        transport = os.path.join(transport_dir, name)
+        with open(transport, "r") as handle:
+            original = handle.read()
+        includes = ["#include <{}>".format(header) for header in headers
+                    if "#include <{}>".format(header) not in original]
+        if not includes:
+            continue
+        with open(transport, "w") as handle:
+            handle.write("\n".join(includes) + "\n" + original)
+        log("Patched " + name + " to include required standard headers")
 
 
 def macos_arch():
@@ -176,7 +178,7 @@ def main():
 
     source_dir = extracted_root(nrf_extract)
     patch_apple_cmake(source_dir)
-    patch_uart_transport(source_dir)
+    patch_transport_headers(source_dir)
     build_dir = os.path.join(work, "build")
     if os.path.isdir(build_dir):
         shutil.rmtree(build_dir)
