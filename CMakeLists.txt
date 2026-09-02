@@ -121,7 +121,7 @@ foreach(SD_API_VER ${SD_API_VERS})
     endif()
 
     set(LINK_LIBRARIES nrf::nrf_ble_driver_sd_api_v${SD_API_VER}_${NRF_BLE_DRIVER_LINKAGE_TYPE})
-    if (WIN32 OR APPLE)
+    if(WIN32)
         set(LINK_LIBRARIES ${LINK_LIBRARIES} ${PYTHON_LIBRARY_FROM_USER_FLAGS})
         message(VERBOSE "Python library from the user flags is : ${PYTHON_LIBRARY_FROM_USER_FLAGS}")
     endif()
