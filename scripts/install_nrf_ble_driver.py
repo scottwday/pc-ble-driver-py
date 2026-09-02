@@ -196,7 +196,7 @@ def main():
     if sys.platform == "darwin":
         cmake_args.append("-DCMAKE_OSX_ARCHITECTURES=" + macos_arch())
     if sys.platform == "win32":
-        cmake_args.extend(["-G", "Visual Studio 17 2022", "-A", "x64"])
+        cmake_args.extend(["-G", "Visual Studio 18 2026", "-A", "x64"])
     elif which("ninja"):
         cmake_args[1:1] = ["-G", "Ninja"]
 
