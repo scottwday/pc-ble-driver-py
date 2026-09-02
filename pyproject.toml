@@ -1,5 +1,12 @@
 [build-system]
-requires = ["setuptools", "wheel", "scikit-build", "cmake", "ninja", "tox"]
+requires = [
+    "setuptools>=54.1.2",
+    "wheel",
+    "scikit-build>=0.17.5",
+    "cmake>=3.13.3",
+    "ninja",
+    "swig",
+]
 
 [flake8]
 exclude = [
@@ -7,3 +14,41 @@ exclude = [
     "__pycache__",
     "lib"
 ]
+
+[tool.cibuildwheel]
+# CPython 3.10, 3.12, and 3.14. Skip PyPy, musllinux, 32-bit, ARM Windows, and free-threaded.
+build = ["cp310-*", "cp312-*", "cp314-*"]
+skip = [
+    "pp*",
+    "*musllinux*",
+    "*-win32",
+    "*-win_arm64",
+    "*-manylinux_i686",
+    "*-manylinux_aarch64",
+    "*-manylinux_ppc64le",
+    "*-manylinux_s390x",
+    "*-manylinux_armv7l",
+    "*-manylinux_riscv64",
+    "cp3??t-*",
+]
+archs = ["auto64"]
+build-verbosity = 1
+# Hardware tests need two Nordic DKs; CI only smoke-imports the extension.
+test-command = "python -c \"from pc_ble_driver_py.lib import nrf_ble_driver_sd_api_v2, nrf_ble_driver_sd_api_v5; print('ok')\""
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+before-all = "python {package}/scripts/install_nrf_ble_driver.py"
+# libudev is expected on Linux hosts that talk to USB serial adapters.
+repair-wheel-command = "auditwheel repair --exclude libudev.so.1 -w {dest_dir} {wheel}"
+environment = { NRF_BLE_DRIVER_PREFIX = "/tmp/nrf-ble-driver", CMAKE_PREFIX_PATH = "/tmp/nrf-ble-driver" }
+
+[tool.cibuildwheel.macos]
+archs = ["native"]
+before-all = "python {package}/scripts/install_nrf_ble_driver.py"
+environment = { NRF_BLE_DRIVER_PREFIX = "/tmp/nrf-ble-driver", CMAKE_PREFIX_PATH = "/tmp/nrf-ble-driver" }
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+before-all = "python {package}/scripts/install_nrf_ble_driver.py"
+environment = { NRF_BLE_DRIVER_PREFIX = "C:/nrf-ble-driver", CMAKE_PREFIX_PATH = "C:/nrf-ble-driver", PATH = "C:/nrf-ble-driver/bin;$PATH" }

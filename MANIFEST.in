@@ -5,6 +5,7 @@ include CMakeLists.txt
 include tox.ini
 include requirements-dev.txt
 include pyproject.toml
+recursive-include scripts *
 
 recursive-include pc_ble_driver_py *
 recursive-include swig *

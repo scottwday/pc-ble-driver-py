@@ -4,6 +4,10 @@ if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "")
 endif()
+
+if(DEFINED ENV{NRF_BLE_DRIVER_PREFIX})
+    list(APPEND CMAKE_PREFIX_PATH "$ENV{NRF_BLE_DRIVER_PREFIX}")
+endif()
 # Name of the project
 project (pc-ble-driver-py)
 # PYTHON_LIBRARY is changed by the PythonExtensions package, so a different variable is required to keep the original user flag
@@ -33,6 +37,9 @@ endif()
 
 set(PC_BLE_DRIVER_PY_OUTDIR ${CMAKE_BINARY_DIR}/outdir)
 set(NRF_BLE_DRIVER_VERSION "4.1.4")
+if(DEFINED ENV{NRF_BLE_DRIVER_VERSION})
+    set(NRF_BLE_DRIVER_VERSION "$ENV{NRF_BLE_DRIVER_VERSION}")
+endif()
 
 # There is no reason to compile more than two SoftDevice API versions
 # The Python module only supports one SoftDevice API
@@ -114,7 +121,7 @@ foreach(SD_API_VER ${SD_API_VERS})
     endif()
 
     set(LINK_LIBRARIES nrf::nrf_ble_driver_sd_api_v${SD_API_VER}_${NRF_BLE_DRIVER_LINKAGE_TYPE})
-    if (WIN32 OR APPLE)
+    if(WIN32)
         set(LINK_LIBRARIES ${LINK_LIBRARIES} ${PYTHON_LIBRARY_FROM_USER_FLAGS})
         message(VERBOSE "Python library from the user flags is : ${PYTHON_LIBRARY_FROM_USER_FLAGS}")
     endif()
@@ -122,6 +129,9 @@ foreach(SD_API_VER ${SD_API_VERS})
     message(VERBOSE STATUS "LINK_LIBRARIES are ${LINK_LIBRARIES}")
 
     target_link_libraries(${PYTHON_MODULE_${SD_API_VER}} PRIVATE ${LINK_LIBRARIES})
+    if(APPLE)
+        target_link_options(${PYTHON_MODULE_${SD_API_VER}} PRIVATE "-undefined" "dynamic_lookup")
+    endif()
     target_compile_definitions(${PYTHON_MODULE_${SD_API_VER}} PRIVATE NRF_SD_BLE_API_VERSION=${SD_API_VER})
 
     get_target_property(CONNECTIVITY_SD_API_V${SD_API_VER}_PATH nrf::nrf_ble_driver_sd_api_v${SD_API_VER}_${NRF_BLE_DRIVER_LINKAGE_TYPE} INTERFACE_INCLUDE_DIRECTORIES)
