@@ -7,13 +7,11 @@ from pc_ble_driver_py.ble_driver import (
     BLEConfig,
     BLEConfigConnGatt,
     BLEUUIDBase,
-    BLEGattStatusCode,
     driver,
 )
 import xmlrunner
 import unittest
 
-from pprint import pformat
 
 
 

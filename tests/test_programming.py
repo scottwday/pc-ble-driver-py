@@ -39,20 +39,11 @@ from driver_setup import Settings
 
 import logging
 logger = logging.getLogger(__name__)
-import random
-import string
-import time
 import unittest
-from functools import reduce
-from queue import Queue
 
 import xmlrunner
 from pc_ble_driver_py.ble_driver import (
-    BLEAdvData,
-    BLEConfig,
-    BLEConfigConnGatt,
     BLEDriver,
-    BLEEnableParams,
     Flasher,
 )
 

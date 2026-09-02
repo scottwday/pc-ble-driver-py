@@ -44,17 +44,12 @@ logger = logging.getLogger(__name__)
 
 import random
 import string
-import time
 import unittest
 from queue import Queue
 
 import xmlrunner
 from pc_ble_driver_py.ble_driver import (
     BLEAdvData,
-    BLEConfig,
-    BLEConfigConnGatt,
-    BLEDriver,
-    BLEEnableParams,
 )
 from pc_ble_driver_py.observers import BLEAdapterObserver, BLEDriverObserver
 

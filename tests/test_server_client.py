@@ -118,11 +118,11 @@ class Central(BLEDriverObserver, BLEAdapterObserver):
 
     def enable_notification(self, uuid):
         self.adapter.enable_notification(self.conn_handle, uuid)
-        logger.info(f"Notification enabled.")
+        logger.info("Notification enabled.")
 
     def disable_notification(self, uuid):
         self.adapter.disable_notification(self.conn_handle, uuid)
-        logger.info(f"Notification disabled.")
+        logger.info("Notification disabled.")
 
     def on_gap_evt_connected(
         self, ble_driver, conn_handle, peer_addr, role, conn_params

@@ -275,7 +275,7 @@ class BLEAdapter(BLEDriverObserver):
         # See: https://github.com/NordicSemiconductor/pc-ble-driver-py/issues/219
         if uuid is not None and uuid in [service.uuid for service in self.db_conns[conn_handle].services]:
             return BLEGattStatusCode.success
-        
+
         vendor_services = []
         self.driver.ble_gattc_prim_srvc_disc(conn_handle, uuid, 0x0001)
 
