@@ -3,8 +3,8 @@ include README.md
 include LICENSE
 include CMakeLists.txt
 include tox.ini
-include requirements-dev.txt
 include pyproject.toml
+include uv.lock
 recursive-include scripts *
 
 recursive-include pc_ble_driver_py *

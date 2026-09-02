@@ -23,6 +23,10 @@ To install the latest published version from the Python Package Index simply typ
 
     pip install pc-ble-driver-py
 
+or with [uv](https://docs.astral.sh/uv/):
+
+    uv add pc-ble-driver-py
+
 **Note**: On Windows, the runtime libraries targeted when building the library must be present when running code using the library. If you get one of the following errors:
 
 * Missing `MSVC*120.DLL` or `MSVC*140.DLL`
@@ -67,14 +71,18 @@ Running vcpkg install starts compilation and installation of nrf-ble-driver.
 Before compiling the binding do the following:
 
 * Make sure that the VCPKG_ROOT environment variable is set to the location of the vcpkg directory
-* install the python install requirements:
+* Install [uv](https://docs.astral.sh/uv/) and sync development dependencies:
 
 
-        pip install -r requirements-dev.txt
+        uv sync
 
 
+Lint and format with [Ruff](https://docs.astral.sh/ruff/):
 
-Building a release of the binding and automatically running tests afterwards can be initiated with [tox](https://tox.readthedocs.io/en/latest/). tox is a generic virtualenv management and test command line tool.
+    uv run ruff check pc_ble_driver_py tests scripts
+    uv run ruff format pc_ble_driver_py tests scripts
+
+Building a release of the binding and automatically running tests afterwards can be initiated with [tox](https://tox.readthedocs.io/en/latest/). tox is a generic virtualenv management and test command line tool. `uv sync` installs tox in the project environment.
 
 Two development kits must be attached to the computer and the UART ports for them must be specified through envionment variables (PORT_A, PORT_B).
 

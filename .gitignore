@@ -17,6 +17,8 @@ dist
 .idea
 .vs
 .tox
+.venv
+.ruff_cache
 _skbuild
 _cmake_test_compile
 **/test-results/
@@ -38,3 +40,4 @@ test_results
 .util
 buildinfo 
 repeatable_skbuild/
+/.nrf-ble-driver/
